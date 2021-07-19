@@ -20,3 +20,10 @@
 
 * For running unit tests in your env file switch the `DB_DATABASE` field to your dedicated testing database
   before running the tests
+  
+## Laravel sail
+
+* In case you want to use docker you can simply use `vendor/bin/sail up`
+
+
+* Run `vendor/bin/sail artisan migrate` to run migrations
