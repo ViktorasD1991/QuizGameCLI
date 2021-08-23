@@ -23,4 +23,6 @@ interface QuestionsRepository
     public function getAllUserQuestions(string $username): Collection;
 
     public function resetQuestions(string $username): Collection;
+
+    public function deleteQuestion(int $questionId): void;
 }

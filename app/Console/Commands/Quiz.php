@@ -47,7 +47,7 @@ class Quiz extends Command
         do {
             $menu = $this->choice(
                 'Which category you would like to choose?',
-                ['Create a question', 'List all questions', 'Practise', 'Stats', 'Reset', 'Exit'],
+                ['Create a question', 'List all questions', 'Practise', 'Stats', 'Reset', 'Delete a question', 'Exit'],
             );
 
             if ($menu == "Create a question") {
@@ -60,6 +60,9 @@ class Quiz extends Command
                 $this->call('qanda:interactive-stats-questions');
             } else if ($menu == 'Reset') {
                 $this->call('qanda:interactive-reset-questions');
+            }
+            else if ($menu == 'Delete a question') {
+                $this->call('qanda:interactive-delete-questions');
             }
         } while ($menu !== 'Exit');
     }

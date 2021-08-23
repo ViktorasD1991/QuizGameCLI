@@ -52,6 +52,7 @@ class PractiseQuestions extends Command
 
         $questions = $this->questionRepository->populateQuestions($username);
         $formattedQuestions = FormatQuestions::format($questions);
+
         $this->table(
             ['Question Number', 'Questions', 'Status'],
             $formattedQuestions

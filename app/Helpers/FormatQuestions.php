@@ -8,15 +8,15 @@ class FormatQuestions
 {
     public static function format(Collection $questions): array
     {
-        $formattedQuestions = [];
-
-        foreach ($questions as $question) {
-            $formattedQuestions[] = [
-                'question_id' => $question->id,
-                'question' => $question->question,
-                'status' => $question->status->status,
+        $formattedQuestions = $questions->map(function ($item, $key) {
+            return [
+                'question_id' => $item->id,
+                'question' => $item->question,
+                'status' => $item->status->status,
             ];
-        }
-        return $formattedQuestions;
+        });
+
+        return $formattedQuestions->toArray();
+
     }
 }

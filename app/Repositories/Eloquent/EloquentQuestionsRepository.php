@@ -59,23 +59,20 @@ class EloquentQuestionsRepository implements QuestionsRepository
      */
     public function populateQuestions(string $username): Collection
     {
-        $questions = $this->questionsModel->get();
+        $questions = $this->questionsModel
+            ->whereDoesntHave('status', function ($query) use ($username) {
+                $query->where('username', '=', $username);
+            })
+            ->get();
 
         $questions->each(function ($question) use ($username) {
-            $userQuestion = $this->questionsStatusModel
-                ->where('username', '=', $username)
-                ->where('question_id', '=', $question->id)
-                ->first();
-
-            if (empty($userQuestion)) {
-                $this->questionsStatusModel->create([
+            $this->questionsStatusModel->create(
+                [
                     'username' => $username,
                     'question_id' => $question->id,
                     'status' => Statuses::NOT_ANSWERED,
                 ]);
-            }
         });
-
 
         return $this->questionsModel->with(['status' => function ($query) use ($username) {
             $query->where('username', '=', $username);
@@ -167,8 +164,20 @@ class EloquentQuestionsRepository implements QuestionsRepository
      */
     public function resetQuestions(string $username): Collection
     {
-        $this->questionsStatusModel->where('username','=',$username)->delete();
+        $this->questionsStatusModel->where('username', '=', $username)->delete();
 
         return collect([]);
+    }
+
+    /**
+     * Deletes a single question
+     *
+     * @param int $questionId
+     *
+     * @return void
+     */
+    public function deleteQuestion(int $questionId): void
+    {
+        $this->questionsModel->where('id', '=', $questionId)->delete();
     }
 }
